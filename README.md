@@ -31,7 +31,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 Environment variables:
 
 - `LLM_BASE_URL`: Gemini OpenAI-compatible base URL; default `https://generativelanguage.googleapis.com/v1beta/openai`
-- `LLM_MODEL`: Gemini model; default `gemini-2.5-flash`
+- `LLM_MODEL`: Gemini model; default `gemini-3.5-flash-lite`
 - `LLM_API_KEY`: required Gemini API key
 - `LLM_TIMEOUT_SECONDS`: provider timeout; default `8`
 

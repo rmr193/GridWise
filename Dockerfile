@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PORT=8000 \
     LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai \
-    LLM_MODEL=gemini-2.5-flash \
+    LLM_MODEL=gemini-3.5-flash-lite \
     LLM_TIMEOUT_SECONDS=8
 
 WORKDIR /app

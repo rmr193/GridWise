@@ -43,7 +43,7 @@ class LLMInterpreter:
         self.base_url = os.getenv(
             "LLM_BASE_URL", "https://generativelanguage.googleapis.com/v1beta/openai"
         ).rstrip("/")
-        self.model = os.getenv("LLM_MODEL", "gemini-2.5-flash")
+        self.model = os.getenv("LLM_MODEL", "gemini-3.5-flash-lite")
         self.api_key = os.getenv("LLM_API_KEY", "").strip()
         self.timeout = float(os.getenv("LLM_TIMEOUT_SECONDS", "8"))
 
@@ -68,8 +68,12 @@ class LLMInterpreter:
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 response = await client.post(f"{self.base_url}/chat/completions", headers=headers, json=body)
+                if response.status_code == 429:
+                    raise InterpretationError("LLM provider quota exceeded")
                 response.raise_for_status()
                 content = response.json()["choices"][0]["message"]["content"]
+        except InterpretationError:
+            raise
         except (httpx.HTTPError, KeyError, IndexError, TypeError, ValueError) as exc:
             raise InterpretationError("LLM provider request failed") from exc
         return parse_and_normalize(content, len(request.operator_notes), request.battery)
